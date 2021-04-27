@@ -275,7 +275,6 @@ class Left_menu {
             if (get_setting("module_job") == "1") {
                 $sidebar_menu["job"] = array("name" => "job", "url" => "job", "class" => "clock");
             }
-
             // end alex's working
             
             if (get_setting("module_timeline") == "1") {

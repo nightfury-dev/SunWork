@@ -14,7 +14,6 @@ class Security_Controller extends App_Controller {
 
     public function __construct($redirect = true) {
         parent::__construct();
-
         //check user's login status, if not logged in redirect to signin page
         $login_user_id = $this->Users_model->login_user_id();
         if (!$login_user_id && $redirect) {

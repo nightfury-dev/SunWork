@@ -39,11 +39,12 @@ class Dashboard extends Security_Controller {
             $view_data["show_total_project_hours"] = get_array_value($widgets, "total_project_hours");
 
             echo $this->template->rander("dashboards/index", $view_data);
-        } else {
+        } 
+        else if($this->login_user->user_type === "client") {
             $client_default_dashboard = get_setting("client_default_dashboard");
+            
             if ($client_default_dashboard) {
                 $view_data["widget_columns"] = $this->make_dashboard(unserialize($client_default_dashboard));
-
                 echo $this->template->rander("dashboards/custom_dashboards/view", $view_data);
             } else {
                 $view_data['show_invoice_info'] = get_array_value($widgets, "show_invoice_info");
@@ -52,7 +53,41 @@ class Dashboard extends Security_Controller {
                 $view_data['client_id'] = get_array_value($widgets, "client_id");
                 $view_data['page_type'] = get_array_value($widgets, "page_type");
                 $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("projects", $this->login_user->is_admin, $this->login_user->user_type);
-
+                
+                echo $this->template->rander("dashboards/client_dashboard", $view_data);
+            }
+        }
+        else if($this->login_user->user_type === "professional") {
+            $client_default_dashboard = get_setting("client_default_dashboard");
+            
+            if ($client_default_dashboard) {
+                $view_data["widget_columns"] = $this->make_dashboard(unserialize($client_default_dashboard));
+                echo $this->template->rander("dashboards/custom_dashboards/view", $view_data);
+            } else {
+                $view_data['show_invoice_info'] = get_array_value($widgets, "show_invoice_info");
+                $view_data['hidden_menu'] = get_array_value($widgets, "hidden_menu");
+                $view_data['client_info'] = get_array_value($widgets, "client_info");
+                $view_data['client_id'] = get_array_value($widgets, "client_id");
+                $view_data['page_type'] = get_array_value($widgets, "page_type");
+                $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("projects", $this->login_user->is_admin, $this->login_user->user_type);
+                
+                echo $this->template->rander("dashboards/client_dashboard", $view_data);
+            }
+        }
+        else if($this->login_user->user_type === "student") {
+            $client_default_dashboard = get_setting("client_default_dashboard");
+            
+            if ($client_default_dashboard) {
+                $view_data["widget_columns"] = $this->make_dashboard(unserialize($client_default_dashboard));
+                echo $this->template->rander("dashboards/custom_dashboards/view", $view_data);
+            } else {
+                $view_data['show_invoice_info'] = get_array_value($widgets, "show_invoice_info");
+                $view_data['hidden_menu'] = get_array_value($widgets, "hidden_menu");
+                $view_data['client_info'] = get_array_value($widgets, "client_info");
+                $view_data['client_id'] = get_array_value($widgets, "client_id");
+                $view_data['page_type'] = get_array_value($widgets, "page_type");
+                $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("projects", $this->login_user->is_admin, $this->login_user->user_type);
+                
                 echo $this->template->rander("dashboards/client_dashboard", $view_data);
             }
         }
@@ -334,7 +369,6 @@ class Dashboard extends Security_Controller {
     }
 
     function view($id = 0) {
-
         validate_numeric_value($id);
 
         $selected_dashboard_id = get_setting("user_" . $this->login_user->id . "_dashboard");
@@ -343,7 +377,6 @@ class Dashboard extends Security_Controller {
         }
 
         $dashboard_info = $this->_get_my_dashboard($id);
-
         if ($dashboard_info) {
             if (get_setting("disable_dashboard_customization_by_clients") && $this->login_user->user_type == "client") {
                 app_redirect("forbidden");

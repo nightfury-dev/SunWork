@@ -9,7 +9,6 @@
     <div class="">
         <?php echo view("clients/info_widgets/index"); ?>
     </div>
-
     <?php if (!in_array("projects", $hidden_menu)) { ?>
         <div class="">
             <?php echo view("clients/projects/index"); ?>

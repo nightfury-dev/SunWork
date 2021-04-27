@@ -62,7 +62,7 @@ class Signin extends App_Controller {
         $validation = $this->validate_submitted_data(array(
             "email" => "required|valid_email",
             "password" => "required"
-                ), true);
+        ), true);
 
         $email = $this->request->getPost("email");
         $password = $this->request->getPost("password");
