@@ -230,14 +230,14 @@ class Left_menu {
     }
 
     private function _get_sidebar_menu_items($type = "") {
-        $dashboard_menu = array("name" => "dashboard", "url" => "dashboard", "class" => "monitor");
+        $dashboard_menu = array("name" => "dashboard", "url" => "dashboard", "class" => "home");
 
         $selected_dashboard_id = get_setting("user_" . $this->ci->login_user->id . "_dashboard");
         // print_r($this->ci->login_user->id);
         // exit(1);
 
         if ($selected_dashboard_id) {
-            $dashboard_menu = array("name" => "dashboard", "url" => "dashboard/view/" . $selected_dashboard_id, "class" => "monitor", "custom_class" => "dashboard-menu");
+            $dashboard_menu = array("name" => "dashboard", "url" => "dashboard/view/" . $selected_dashboard_id, "class" => "home", "custom_class" => "dashboard-menu");
         }
 
         if ($this->ci->login_user->user_type == "staff" && $type !== "client_default") {
@@ -265,7 +265,7 @@ class Left_menu {
 
             // begin alex's working
             if (get_setting("module_department") == "1") {
-                $sidebar_menu["department"] = array("name" => "department", "url" => "department", "class" => "grid");
+                $sidebar_menu["departments"] = array("name" => "department", "url" => "departments", "class" => "grid");
             }
 
             if (get_setting("module_work_feed") == "1") {
@@ -273,7 +273,7 @@ class Left_menu {
             }
 
             if (get_setting("module_job") == "1") {
-                $sidebar_menu["job"] = array("name" => "job", "url" => "job", "class" => "briefcase");
+                $sidebar_menu["jobs"] = array("name" => "job", "url" => "jobs", "class" => "briefcase");
             }
             // end alex's working
             
@@ -290,7 +290,7 @@ class Left_menu {
             }
 
             if (get_setting("module_message") == "1" && $access_messages) {
-                $sidebar_menu["messages"] = array("name" => "messages", "url" => "messages", "class" => "message-circle", "badge" => count_unread_message(), "badge_class" => "bg-primary");
+                $sidebar_menu["messages"] = array("name" => "messages", "url" => "messages", "class" => "mail", "badge" => count_unread_message(), "badge_class" => "bg-primary");
             }
 
 

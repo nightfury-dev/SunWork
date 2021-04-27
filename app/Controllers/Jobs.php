@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Department extends Security_Controller {
+class Jobs extends Security_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -12,7 +12,7 @@ class Department extends Security_Controller {
     /* load timeline view */
 
     function index() {
-        $this->check_module_availability("module_department");
+        $this->check_module_availability("module_job");
 
         $view_data = array();
         // $view_data['team_members'] = "";
@@ -21,7 +21,7 @@ class Department extends Security_Controller {
         //     $view_data['team_members'] = $this->Messages_model->get_users_for_messaging($this->get_user_options_for_query("staff"))->getResult();
         // }
 
-        return $this->template->rander("department/index", $view_data);
+        return $this->template->rander("job/index", $view_data);
     }
 
 }
