@@ -14,7 +14,7 @@ class Left_menu {
 
     function get_available_items($type = "default") {
         $items_array = $this->_prepare_sidebar_menu_items($type);
-
+        
         //remove used items
         $default_left_menu_items = $this->_get_left_menu_from_setting($type);
 
@@ -33,10 +33,10 @@ class Left_menu {
     private function _prepare_sidebar_menu_items($type = "") {
         $final_items_array = array();
         $items_array = $this->_get_sidebar_menu_items($type);
-
-        foreach ($items_array as $item) {
+        
+        foreach($items_array as $item) {
             $main_menu_name = get_array_value($item, "name");
-
+        
             if (isset($item["submenu"])) {
                 //first add this menu removing the submenus
                 if ($main_menu_name !== "finance" && $main_menu_name !== "help_and_support") {
@@ -672,7 +672,77 @@ class Left_menu {
                 $sidebar_menu[] = array("name" => "knowledge_base", "url" => "knowledge_base", "class" => "help-circle");
             }
         }
+        else {
+            //client menu
+            //get the array of hidden menu
+            $hidden_menu = explode(",", get_setting("hidden_client_menus"));
 
+            $sidebar_menu[] = $dashboard_menu;
+
+            if (get_setting("module_department") == "1") {
+                $sidebar_menu["departments"] = array("name" => "department", "url" => "departments", "class" => "grid");
+            }
+
+            if (get_setting("module_work_feed") == "1") {
+                $sidebar_menu["work_feed"] = array("name" => "work_feed", "url" => "workfeed", "class" => "send");
+            }
+
+            if (get_setting("module_job") == "1") {
+                $sidebar_menu["jobs"] = array("name" => "job", "url" => "jobs", "class" => "briefcase");
+            }
+            
+            if (get_setting("module_event") == "1" && !in_array("events", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "events", "url" => "events", "class" => "calendar");
+            }
+
+            //check message access settings for clients
+            if (get_setting("module_message") && get_setting("client_message_users")) {
+                $sidebar_menu[] = array("name" => "messages", "url" => "messages", "class" => "message-circle", "badge" => count_unread_message());
+            }
+
+            if (!in_array("projects", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "projects", "url" => "projects/all_projects", "class" => "grid");
+            }
+
+
+            if (get_setting("module_estimate") && !in_array("estimates", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "estimates", "url" => "estimates", "class" => "file");
+            }
+
+            if (get_setting("module_invoice") == "1") {
+                if (!in_array("invoices", $hidden_menu)) {
+                    $sidebar_menu[] = array("name" => "invoices", "url" => "invoices", "class" => "file-text");
+                }
+                if (!in_array("payments", $hidden_menu)) {
+                    $sidebar_menu[] = array("name" => "invoice_payments", "url" => "invoice_payments", "class" => "dollar-sign");
+                }
+            }
+
+            if (!in_array("store", $hidden_menu) && get_setting("client_can_access_store")) {
+                $sidebar_menu[] = array("name" => "store", "url" => "items/grid_view", "class" => "truck");
+                $sidebar_menu[] = array("name" => "orders", "url" => "orders", "class" => "shopping-cart");
+            }
+
+            if (get_setting("module_ticket") == "1" && !in_array("tickets", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "tickets", "url" => "tickets", "class" => "life-buoy");
+            }
+
+            if (get_setting("module_announcement") == "1" && !in_array("announcements", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "announcements", "url" => "announcements", "class" => "bell");
+            }
+
+            $sidebar_menu[] = array("name" => "users", "url" => "clients/users", "class" => "users");
+
+            if (get_setting("client_can_view_files")) {
+                $sidebar_menu[] = array("name" => "files", "url" => "clients/files/" . $this->ci->login_user->id . "/page_view", "class" => "image");
+            }
+
+            $sidebar_menu[] = array("name" => "my_profile", "url" => "clients/contact_profile/" . $this->ci->login_user->id, "class" => "settings");
+
+            if (get_setting("module_knowledge_base") == "1" && !in_array("knowledge_base", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "knowledge_base", "url" => "knowledge_base", "class" => "help-circle");
+            }
+        }
         return $sidebar_menu;
     }
 
