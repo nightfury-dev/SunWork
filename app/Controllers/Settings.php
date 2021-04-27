@@ -109,6 +109,7 @@ class Settings extends Security_Controller {
     }
 
     function company() {
+        // first step
         return $this->template->rander("settings/company");
     }
 
