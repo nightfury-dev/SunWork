@@ -1,3 +1,5 @@
-# 
 /.cpanel.yml
 /app/Config/Database.php
+app/Config/Database.php
+*.php
+app/Config/Database.php
