@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class WorkFeed extends Security_Controller {
+class Workfeed extends Security_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -24,6 +24,3 @@ class WorkFeed extends Security_Controller {
     }
 
 }
-
-/* End of file timeline.php */
-    /* Location: ./app/controllers/timeline.php */
