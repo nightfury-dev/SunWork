@@ -33,9 +33,9 @@ class Database extends Config
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'localhost',
-		'username' => 'worksson_myworkssonpro',
-		'password' => 'ga#CC=KrF0vd',
-		'database' => 'worksson_workssonplatform',
+		'username' => 'root',
+		'password' => '',
+		'database' => 'worksson',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,
