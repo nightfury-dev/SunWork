@@ -15,6 +15,38 @@
                     <div><?php echo app_lang("module_settings_instructions"); ?></div>
                 </div>
                 <div class="card-body">
+                    <!-- begin modified by alex -->
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="module_timeline" class="col-md-2 col-xs-8 col-sm-4"><?php echo app_lang('department'); ?></label>
+                            <div class="col-md-10 col-xs-4 col-sm-8">
+                                <?php
+                                echo form_checkbox("module_department", "1", get_setting("module_department") ? true : false, "id='module_department' class='form-check-input ml15'");
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="module_timeline" class="col-md-2 col-xs-8 col-sm-4"><?php echo app_lang('work_feed'); ?></label>
+                            <div class="col-md-10 col-xs-4 col-sm-8">
+                                <?php
+                                echo form_checkbox("module_work_feed", "1", get_setting("module_work_feed") ? true : false, "id='module_work_feed' class='form-check-input ml15'");
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="module_timeline" class="col-md-2 col-xs-8 col-sm-4"><?php echo app_lang('job'); ?></label>
+                            <div class="col-md-10 col-xs-4 col-sm-8">
+                                <?php
+                                echo form_checkbox("module_job", "1", get_setting("module_job") ? true : false, "id='module_job' class='form-check-input ml15'");
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- begin modified by alex -->
                     <div class="form-group">
                         <div class="row">
                             <label for="module_timeline" class="col-md-2 col-xs-8 col-sm-4"><?php echo app_lang('timeline'); ?></label>
