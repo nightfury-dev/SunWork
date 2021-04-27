@@ -233,6 +233,9 @@ class Left_menu {
         $dashboard_menu = array("name" => "dashboard", "url" => "dashboard", "class" => "monitor");
 
         $selected_dashboard_id = get_setting("user_" . $this->ci->login_user->id . "_dashboard");
+        // print_r($this->ci->login_user->id);
+        // exit(1);
+
         if ($selected_dashboard_id) {
             $dashboard_menu = array("name" => "dashboard", "url" => "dashboard/view/" . $selected_dashboard_id, "class" => "monitor", "custom_class" => "dashboard-menu");
         }
@@ -260,7 +263,21 @@ class Left_menu {
 
             $manage_help_and_knowledge_base = ($this->ci->login_user->is_admin || get_array_value($permissions, "help_and_knowledge_base"));
 
+            // begin alex's working
+            if (get_setting("module_department") == "1") {
+                $sidebar_menu["department"] = array("name" => "department", "url" => "department", "class" => "info");
+            }
 
+            if (get_setting("module_work_feed") == "1") {
+                $sidebar_menu["work_feed"] = array("name" => "work_feed", "url" => "workfeed", "class" => "info");
+            }
+
+            if (get_setting("module_job") == "1") {
+                $sidebar_menu["job"] = array("name" => "job", "url" => "job", "class" => "clock");
+            }
+
+            // end alex's working
+            
             if (get_setting("module_timeline") == "1") {
                 $sidebar_menu["timeline"] = array("name" => "timeline", "url" => "timeline", "class" => "send");
             }
