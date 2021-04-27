@@ -6,7 +6,6 @@ class Jobs extends Security_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->access_only_team_members();
     }
 
     /* load timeline view */
