@@ -3,9 +3,9 @@
 $lang["example"] = "Example";
 
 // begin modified by alex
-$lang['department'] = "Department";
+$lang['department'] = "Departments";
 $lang['work_feed'] = "Work Feed";
-$lang['job'] = "Job";
+$lang['job'] = "Jobs";
 
 // end modified by alex
 

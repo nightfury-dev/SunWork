@@ -265,15 +265,15 @@ class Left_menu {
 
             // begin alex's working
             if (get_setting("module_department") == "1") {
-                $sidebar_menu["department"] = array("name" => "department", "url" => "department", "class" => "info");
+                $sidebar_menu["department"] = array("name" => "department", "url" => "department", "class" => "grid");
             }
 
             if (get_setting("module_work_feed") == "1") {
-                $sidebar_menu["work_feed"] = array("name" => "work_feed", "url" => "workfeed", "class" => "info");
+                $sidebar_menu["work_feed"] = array("name" => "work_feed", "url" => "workfeed", "class" => "send");
             }
 
             if (get_setting("module_job") == "1") {
-                $sidebar_menu["job"] = array("name" => "job", "url" => "job", "class" => "clock");
+                $sidebar_menu["job"] = array("name" => "job", "url" => "job", "class" => "briefcase");
             }
             // end alex's working
             
