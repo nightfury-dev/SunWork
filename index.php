@@ -59,3 +59,5 @@ if ($app_state === 'pre_installation') {
  * up the engines and make this app do its thang.
  */
 $app->run();
+
+// test
