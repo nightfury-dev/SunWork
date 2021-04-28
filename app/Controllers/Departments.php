@@ -105,7 +105,7 @@ class Departments extends Security_Controller {
         // }
 
         $row_data = array(
-            anchor(get_uri("projects/view/" . $data->id), $data->id),
+            anchor(get_uri("departments/view/" . $data->id), $data->id),
             $data->icon != '' ? "<span class='avatar avatar-xs mr10'><img src='". base_url()."/files/department_icon/". $data->icon ."' alt='...'></span>" : "",
             $data->name,
             $data->description,
@@ -214,6 +214,42 @@ class Departments extends Security_Controller {
             echo json_encode(array("success" => true, 'message' => app_lang('record_deleted')));
         } else {
             echo json_encode(array("success" => false, 'message' => app_lang('record_cannot_be_deleted')));
+        }
+    }
+
+    function view($department_id = 0) {
+        $view_data = $this->_get_department_info_data($department_id);
+        return $this->template->rander("department/view", $view_data);
+    }
+
+    private function _get_department_info_data($department_id) {
+        $options = array(
+            "id" => $department_id,
+        );
+
+        $department_info = $this->Departments_model->get_details($options)->getRow();
+        
+        if ($department_info) {
+            $members_id = $department_info->members_id;
+            $members_string = '';
+            if($members_id !== '') {
+                $members_arr = explode(',', $members_id);
+                for($i=0; $i<count($members_arr); $i++) {
+                    $options = array(
+                        'id' => $members_arr[$i]
+                    );
+                    $user_record = $this->Users_model->get_details($options)->getRow();
+                    $username = $user_record->first_name . ' ' . $user_record->last_name . '(' . $user_record->email . ')';
+                    $members_string .= $username . ' <br>';
+
+                }
+            }
+            
+            $view_data['members_string'] = $members_string;
+            $view_data['department_info'] = $department_info;
+            return $view_data;
+        } else {
+            show_404();
         }
     }
 }

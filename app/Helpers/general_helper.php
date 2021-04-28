@@ -1043,6 +1043,22 @@ if (!function_exists('get_ticket_id')) {
 
 }
 
+/**
+ * 
+ * get department number
+ * @param Int $department_id
+ * @return string
+ */
+if (!function_exists('get_department_id')) {
+
+    function get_department_id($department_id) {
+        $prefix = get_setting("department_prefix");
+        $prefix = $prefix ? $prefix : app_lang("department") . " #";
+        return $prefix . $department_id;
+    }
+
+}
+
 
 /**
  * get all data to make an estimate

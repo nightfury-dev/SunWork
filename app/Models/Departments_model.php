@@ -15,9 +15,19 @@ class Departments_model extends Crud_model {
         $departments_table = $this->db->prefixTable('departments');
         $where = "";
 
+        $id = get_array_value($options, "id");
+        if ($id) {
+            $where .= " AND $departments_table.id=$id";
+        }
+
         $created_by = get_array_value($options, "created_by");
         if ($created_by) {
             $where .= " AND $departments_table.created_by=$created_by";
+        }
+
+        $status = get_array_value($options, "status");
+        if ($status) {
+            $where .= " AND $departments_table.status='$status'";
         }
 
         $this->db->query('SET SQL_BIG_SELECTS=1');
@@ -26,6 +36,7 @@ class Departments_model extends Crud_model {
         FROM $departments_table
         WHERE $departments_table.deleted=0 $where
         ORDER BY $departments_table.created_at DESC";
+
         return $this->db->query($sql);
     }
 
