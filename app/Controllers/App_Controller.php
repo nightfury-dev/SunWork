@@ -108,7 +108,9 @@ class App_Controller extends Controller {
             'Order_status_model',
             'Labels_model',
             'Verification_model',
-            'Item_categories_model'
+            'Item_categories_model',
+            // new model
+            'Departments_model'
         );
     }
 
