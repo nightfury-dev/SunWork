@@ -17,14 +17,14 @@ class Departments extends Security_Controller {
         app_redirect("departments/all_departments");
     }
 
-    function all_departments() {
-        // $view_data['project_labels_dropdown'] = json_encode($this->make_labels_dropdown("project", "", true));
+    function all_departments($status = "") {
+        $view_data['department_labels_dropdown'] = json_encode($this->make_labels_dropdown("department" , "", true));
 
         // $view_data["can_create_projects"] = $this->can_create_projects();
 
-        // $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("projects", $this->login_user->is_admin, $this->login_user->user_type);
+        $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("departments", $this->login_user->is_admin, $this->login_user->user_type);
 
-        // $view_data["status"] = $status;
+        $view_data["status"] = $status;
 
         if ($this->login_user->user_type === "staff") {
             // $view_data["can_edit_projects"] = $this->can_edit_projects();
@@ -32,7 +32,7 @@ class Departments extends Security_Controller {
 
             // return $this->template->rander("projects/index", $view_data);
         } else {
-            $view_data['client_id'] = $this->login_user->client_id;
+            $view_data['created_by'] = $this->login_user->id;
             return $this->template->rander("department/index", $view_data);
         }
     }
@@ -73,7 +73,7 @@ class Departments extends Security_Controller {
         return $this->template->view('department/modal_form', $view_data);
     }
 
-    function departments_list_data_of_client($client_id = 0) {
+    function departments_list_data_of_user($created_by = 0) {
 
         // $this->access_only_team_members_or_client_contact($client_id);
         
@@ -82,7 +82,7 @@ class Departments extends Security_Controller {
         // $statuses = $this->request->getPost('status') ? implode(",", $this->request->getPost('status')) : "";
 
         $options = array(
-            "client_id" => $client_id,
+            "created_by" => $created_by,
             // "statuses" => $statuses,
             // "project_label" => $this->request->getPost("project_label"),
             // "custom_fields" => $custom_fields
@@ -100,47 +100,23 @@ class Departments extends Security_Controller {
     private function _make_row($data, $custom_fields) {
         $start_date = is_date_exists($data->start_date) ? format_to_date($data->start_date, false) : "-";
         
-        // $name = anchor(get_uri("departments/view/" . $data->id), $data->name);
-
-        // if ($data->labels_list) {
-        //     $project_labels = make_labels_view_data($data->labels_list, true);
-        //     $title .= "<br />" . $project_labels;
-        // }
-
-        // $optoins = "";
+        $optoins = "";
         // if ($this->can_edit_projects()) {
-        //     $optoins .= modal_anchor(get_uri("projects/modal_form"), "<i data-feather='edit' class='icon-16'></i>", array("class" => "edit", "title" => app_lang('edit_project'), "data-post-id" => $data->id));
+            $optoins .= modal_anchor(get_uri("departments/modal_form"), "<i data-feather='edit' class='icon-16'></i>", array("class" => "edit", "title" => app_lang('edit_department'), "data-post-id" => $data->id));
         // }
 
         // if ($this->can_delete_projects()) {
-        //     $optoins .= js_anchor("<i data-feather='x' class='icon-16'></i>", array('title' => app_lang('delete_project'), "class" => "delete", "data-id" => $data->id, "data-action-url" => get_uri("projects/delete"), "data-action" => "delete-confirmation"));
+            $optoins .= js_anchor("<i data-feather='x' class='icon-16'></i>", array('title' => app_lang('delete_department'), "class" => "delete", "data-id" => $data->id, "data-action-url" => get_uri("departments/delete"), "data-action" => "delete-confirmation"));
         // }
-
-        // //show the project price to them who has permission to create projects
-        // if ($this->login_user->user_type == "staff" && !$this->can_create_projects()) {
-        //     $price = "-";
-        // }
-
-
-        // $row_data = array(
-        //     anchor(get_uri("projects/view/" . $data->id), $data->id),
-        //     $title,
-        //     anchor(get_uri("clients/view/" . $data->client_id), $data->company_name),
-        //     $price,
-        //     $data->start_date,
-        //     $start_date,
-        //     $data->deadline,
-        //     $dateline,
-        //     $progress_bar,
-        //     app_lang($data->status)
-        // );
 
         $row_data = array(
-            $data->id,
+            anchor(get_uri("projects/view/" . $data->id), $data->id),
+            $data->icon != '' ? "<span class='avatar avatar-xs mr10'><img src='". base_url()."/files/department_icon/". $data->icon ."' alt='...'></span>" : "",
             $data->name,
             $data->description,
-            $data->start_date,
-            $data->status
+            $data->created_at,
+            $data->status,
+            $data->private == 1 ? 'Private' : ''
         );
 
         foreach ($custom_fields as $field) {
@@ -155,6 +131,7 @@ class Departments extends Security_Controller {
 
     function save() {
         $id = $this->request->getPost('id');
+            
         // if ($id) {
         //     if (!$this->can_edit_projects()) {
         //         app_redirect("forbidden");
@@ -169,49 +146,47 @@ class Departments extends Security_Controller {
             "name" => "required",
             // 'department_icon' => 'uploaded[file]|max_size[file,1024]|ext_in[file,jpg,jpeg,png,gif]|required'
         ));
+        
+        $data = array();
 
         $status = $this->request->getPost('status');
-
         $file = $this->request->getFile('department_icon');
-        if (!$file->isValid())
+        $filepath = "";
+        if ($file && $file->isValid())
         {
-            throw new \RuntimeException($file->getErrorString().'('.$file->getError().')');
+            $file_ext = $file->getClientExtension();
+            $newName = $file->getRandomName();
+            $file->move('files/department_icon', $newName);
+            $filepath = $newName;
+            // base_url()."/files/department_icon/".
+        }
+        else {
+            if($id) {
+                $icon_path = $this->Departments_model->get_icon_path($id);
+                if($icon_path !== '') {
+                    $filepath = $icon_path;
+                }
+            }
         }
 
-        $file_ext = $file->getClientExtension();
-        $newName = $file->getRandomName();
-        $file->move('files/department_icon', $newName);
-        $filepath = base_url()."/files/department_icon/".$newName;
         $data = array(
             "name" => $this->request->getPost('name'),
             "description" => $this->request->getPost('description'),
             "members_id" => "",
             "icon" => $filepath,
             "private" => $this->request->getPost('private') ? 1 : 0,
-            "status" => $status ? $status : "open",
-            "start_date" => date("Y-m-d"),
-            "client_id" => $this->request->getPost('client_id')
+            "status" => $status ? $status : "open"
         );
 
-        // if (!$id) {
-        //     $data["created_date"] = get_current_utc_time();
-        //     $data["created_by"] = $this->login_user->id;
-        // }
-
-        //created by client? overwrite the client id for safety
-        // if ($this->login_user->user_type === "clinet") {
-        //     $data["client_id"] = $this->login_user->client_id;
-        // }
-
+        if(!$id) {
+            $data['created_at'] = date("Y-m-d");
+            $data['created_by'] = $this->login_user->id;
+        }
 
         $data = clean_data($data);
 
-        //set null value after cleaning the data
-        if (!$data["start_date"]) {
-            $data["start_date"] = NULL;
-        }
-
         $save_id = $this->Departments_model->ci_save($data, $id);
+        
         if ($save_id) {
             save_custom_fields("departments", $save_id, $this->login_user->is_admin, $this->login_user->user_type);
             echo json_encode(array("success" => true, "data" => $this->_row_data($save_id), 'id' => $save_id, 'message' => app_lang('record_saved')));
@@ -230,6 +205,21 @@ class Departments extends Security_Controller {
 
         $data = $this->Departments_model->get_details($options)->getRow();
         return $this->_make_row($data, $custom_fields);
+    }
+
+    function delete() {
+        // if (!$this->can_delete_projects()) {
+        //     app_redirect("forbidden");
+        // }
+
+        $id = $this->request->getPost('id');
+
+        if ($this->Departments_model->delete_department_and_sub_items($id)) {
+            // log_notification("department_deleted", array("project_id" => $id));
+            echo json_encode(array("success" => true, 'message' => app_lang('record_deleted')));
+        } else {
+            echo json_encode(array("success" => false, 'message' => app_lang('record_cannot_be_deleted')));
+        }
     }
 }
 

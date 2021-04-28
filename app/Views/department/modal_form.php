@@ -2,7 +2,6 @@
 <div class="modal-body clearfix">
     <div class="container-fluid">
         <input type="hidden" name="id" value="<?php echo $model_info->id; ?>" />
-        <input type="hidden" name="client_id" value="<?php echo $client_id; ?>" />
         <div class="form-group">
             <div class="row">
                 <label for="department_icon" class="col-md-3"><?php echo app_lang('department_icon'); ?></label>
@@ -16,8 +15,6 @@
                             "id" => "department_icon",
                             "name" => "department_icon",
                             "class" => "no-outline hidden-input-file",
-                            "data-rule-required" => true,
-                            "data-msg-required" => app_lang("field_required"),
                         ));
                         ?>
                     </div>
@@ -99,13 +96,14 @@
         $("#department-form").appForm({
             onSuccess: function (result) {
                 $("#department-table").appTable({newData: result.data, dataId: result.id});
+                location.reload();
             }
         });
         setTimeout(function () {
             $("#name").focus();
         }, 200);
 
-        $("#deaprtment-form .select2").select2();
+        $("#department-form .select2").select2();
 
         // setDatePicker("#start_date");
         // $("#project_labels").select2({multiple: true, data: <?php echo json_encode($label_suggestions); ?>});
