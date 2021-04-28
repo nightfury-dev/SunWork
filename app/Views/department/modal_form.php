@@ -90,7 +90,7 @@
                             "name" => "members_id",
                             "value" => $model_info->members_id,
                             "class" => "form-control",
-                            "placeholder" => app_lang('Members')
+                            "placeholder" => app_lang('members')
                         ));
                     ?>
                 </div>

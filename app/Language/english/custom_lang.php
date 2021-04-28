@@ -16,7 +16,7 @@ $lang['department_icon'] = "Department Icon";
 $lang['description'] = "Description";
 $lang['icon'] = "Icon";
 $lang['add_people'] = "Add People";
-$lang['enter_email_or_username'] = 'Enter Email or UserName';
+$lang['members'] = 'Select Members';
 // end modified by alex
 
 return $lang;
