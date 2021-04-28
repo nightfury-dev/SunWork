@@ -16,7 +16,7 @@ class Departments_model extends Crud_model {
         $where = "";
 
         $created_by = get_array_value($options, "created_by");
-        if ($client_id) {
+        if ($created_by) {
             $where .= " AND $departments_table.created_by=$created_by";
         }
 

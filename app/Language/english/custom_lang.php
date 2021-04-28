@@ -15,6 +15,8 @@ $lang['private'] = 'Make Private';
 $lang['department_icon'] = "Department Icon";
 $lang['description'] = "Description";
 $lang['icon'] = "Icon";
+$lang['add_people'] = "Add People";
+$lang['enter_email_or_username'] = 'Enter Email or UserName';
 // end modified by alex
 
 return $lang;

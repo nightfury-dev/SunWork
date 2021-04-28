@@ -9,6 +9,7 @@ class Departments extends Security_Controller {
     public function __construct() {
         parent::__construct();
         $this->Departments_model = model('App\Models\Departments_model');
+        
     }
 
     /* load timeline view */
@@ -19,11 +20,8 @@ class Departments extends Security_Controller {
 
     function all_departments($status = "") {
         $view_data['department_labels_dropdown'] = json_encode($this->make_labels_dropdown("department" , "", true));
-
         // $view_data["can_create_projects"] = $this->can_create_projects();
-
         $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("departments", $this->login_user->is_admin, $this->login_user->user_type);
-
         $view_data["status"] = $status;
 
         if ($this->login_user->user_type === "staff") {
@@ -39,8 +37,7 @@ class Departments extends Security_Controller {
 
     function modal_form() {
         $department_id = $this->request->getPost('id');
-        $client_id = $this->request->getPost('client_id');
-
+        
         if ($department_id) {
             // if (!$this->can_edit_projects()) {
             //     app_redirect("forbidden");
@@ -51,24 +48,22 @@ class Departments extends Security_Controller {
             // }
         }
         
-        $view_data["client_id"] = $client_id;
         $view_data['model_info'] = $this->Departments_model->get_one($department_id);
         
-        if ($client_id) {
-            $view_data['model_info']->client_id = $client_id;
-        }
-
-        //check if it's from estimate. if so, then prepare for project
-        $estimate_id = $this->request->getPost('estimate_id');
-        if ($estimate_id) {
-            $view_data['model_info']->estimate_id = $estimate_id;
-        }
-
-        $view_data["custom_fields"] = $this->Custom_fields_model->get_combined_details("projects", $view_data['model_info']->id, $this->login_user->is_admin, $this->login_user->user_type)->getResult();
-    
-        $view_data['clients_dropdown'] = $this->Clients_model->get_dropdown_list(array("company_name"), "id", array("is_lead" => 0));
+        $all_persons = $this->Users_model->all_persons();
+        $persons_data_for_drop = array();
         
-        $view_data['label_suggestions'] = $this->make_labels_dropdown("project", $view_data['model_info']->labels);
+        for($i=0; $i<count($all_persons); $i++) {
+            $persons_data_for_drop[] = array('id' => $all_persons[$i]['id'], 'text' => $all_persons[$i]['email']);
+        }
+
+        $view_data['all_persons'] = $persons_data_for_drop;
+
+        // $view_data["custom_fields"] = $this->Custom_fields_model->get_combined_details("departments", $view_data['model_info']->id, $this->login_user->is_admin, $this->login_user->user_type)->getResult();
+    
+        // $view_data['clients_dropdown'] = $this->Clients_model->get_dropdown_list(array("company_name"), "id", array("is_lead" => 0));
+        
+        // $view_data['label_suggestions'] = $this->make_labels_dropdown("project", $view_data['model_info']->labels);
         
         return $this->template->view('department/modal_form', $view_data);
     }
@@ -158,7 +153,6 @@ class Departments extends Security_Controller {
             $newName = $file->getRandomName();
             $file->move('files/department_icon', $newName);
             $filepath = $newName;
-            // base_url()."/files/department_icon/".
         }
         else {
             if($id) {
@@ -172,7 +166,7 @@ class Departments extends Security_Controller {
         $data = array(
             "name" => $this->request->getPost('name'),
             "description" => $this->request->getPost('description'),
-            "members_id" => "",
+            "members_id" => $this->request->getPost('members_id'),
             "icon" => $filepath,
             "private" => $this->request->getPost('private') ? 1 : 0,
             "status" => $status ? $status : "open"

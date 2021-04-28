@@ -297,4 +297,11 @@ class Users_model extends Crud_model {
         return $this->db->query($sql)->getRow()->total;
     }
 
+    function all_persons() {
+        $users_table = $this->db->prefixTable('users');
+        $sql = "SELECT id, email 
+        FROM $users_table 
+        WHERE $users_table.deleted=0 AND $users_table.user_type <> 'staff'";
+        return $this->db->query($sql)->getResult('array');
+    }
 }

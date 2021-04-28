@@ -60,6 +60,45 @@
         </div>
         <div class="form-group">
             <div class="row">
+                <label class="col-md-3"><?php echo app_lang('add_people'); ?></label>
+                <div class="col-md-9">
+                    <!-- <div class="member_wrapper">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <?php
+                                    // echo form_input(array(
+                                    //     "id" => "member_1",
+                                    //     "name" => "members[]",
+                                    //     "value" => '',
+                                    //     "class" => "form-control",
+                                    //     "placeholder" => app_lang('enter_email_or_username'),
+                                    //     "data-rule-required" => true,
+                                    //     "data-msg-required" => app_lang("field_required"),
+                                    // ));
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt20 ml10" style="font-size: 12px; color: #f16f23; font-weight: 500; cursor: pointer;" id="add_people">
+                        <span>
+                            <i data-feather='plus-circle' class="icon-14"></i> <?php // echo app_lang("upload"); ?>
+                        </span>
+                    </div> -->
+                    <?php
+                         echo form_input(array(
+                            "id" => "members_id",
+                            "name" => "members_id",
+                            "value" => $model_info->members_id,
+                            "class" => "form-control",
+                            "placeholder" => app_lang('Members')
+                        ));
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
                 <label for="private" class="col-md-3"><?php echo app_lang('private'); ?></label>
                 <div class=" col-md-9">
                     <?php
@@ -106,6 +145,9 @@
         $("#department-form .select2").select2();
 
         // setDatePicker("#start_date");
-        // $("#project_labels").select2({multiple: true, data: <?php echo json_encode($label_suggestions); ?>});
+        $("#members_id").select2({
+            multiple: true, 
+            data: <?php echo json_encode($all_persons); ?>
+        });
     });
 </script>    
