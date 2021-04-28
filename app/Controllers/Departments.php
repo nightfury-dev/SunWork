@@ -97,8 +97,6 @@ class Departments extends Security_Controller {
         echo json_encode(array("data" => $result));
     }
 
-    /* prepare a row of project list table */
-
     private function _make_row($data, $custom_fields) {
         $start_date = is_date_exists($data->start_date) ? format_to_date($data->start_date, false) : "-";
         
@@ -154,7 +152,86 @@ class Departments extends Security_Controller {
 
         return $row_data;
     }
+
+    function save() {
+        $id = $this->request->getPost('id');
+        // if ($id) {
+        //     if (!$this->can_edit_projects()) {
+        //         app_redirect("forbidden");
+        //     }
+        // } else {
+        //     if (!$this->can_create_projects()) {
+        //         app_redirect("forbidden");
+        //     }
+        // }
+
+        $this->validate_submitted_data(array(
+            "name" => "required",
+            // 'department_icon' => 'uploaded[file]|max_size[file,1024]|ext_in[file,jpg,jpeg,png,gif]|required'
+        ));
+
+        $status = $this->request->getPost('status');
+
+        $file = $this->request->getFile('department_icon');
+        if (!$file->isValid())
+        {
+            throw new \RuntimeException($file->getErrorString().'('.$file->getError().')');
+        }
+
+        $file_ext = $file->getClientExtension();
+        $newName = $file->getRandomName();
+        $file->move('files/department_icon', $newName);
+        $filepath = base_url()."/files/department_icon/".$newName;
+        $data = array(
+            "name" => $this->request->getPost('name'),
+            "description" => $this->request->getPost('description'),
+            "members_id" => "",
+            "icon" => $filepath,
+            "private" => $this->request->getPost('private') ? 1 : 0,
+            "status" => $status ? $status : "open",
+            "start_date" => date("Y-m-d"),
+            "client_id" => $this->request->getPost('client_id')
+        );
+
+        // if (!$id) {
+        //     $data["created_date"] = get_current_utc_time();
+        //     $data["created_by"] = $this->login_user->id;
+        // }
+
+        //created by client? overwrite the client id for safety
+        // if ($this->login_user->user_type === "clinet") {
+        //     $data["client_id"] = $this->login_user->client_id;
+        // }
+
+
+        $data = clean_data($data);
+
+        //set null value after cleaning the data
+        if (!$data["start_date"]) {
+            $data["start_date"] = NULL;
+        }
+
+        $save_id = $this->Departments_model->ci_save($data, $id);
+        if ($save_id) {
+            save_custom_fields("departments", $save_id, $this->login_user->is_admin, $this->login_user->user_type);
+            echo json_encode(array("success" => true, "data" => $this->_row_data($save_id), 'id' => $save_id, 'message' => app_lang('record_saved')));
+        } else {
+            echo json_encode(array("success" => false, 'message' => app_lang('error_occurred')));
+        }
+    }
+
+    private function _row_data($id) {
+        $custom_fields = $this->Custom_fields_model->get_available_fields_for_table("departments", $this->login_user->is_admin, $this->login_user->user_type);
+
+        $options = array(
+            "id" => $id,
+            "custom_fields" => $custom_fields
+        );
+
+        $data = $this->Departments_model->get_details($options)->getRow();
+        return $this->_make_row($data, $custom_fields);
+    }
 }
 
 /* End of file Departments.php */
-    /* Location: ./app/controllers/Departments.php */
+/* Location: ./app/controllers/Departments.php */
