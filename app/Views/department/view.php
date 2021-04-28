@@ -34,6 +34,7 @@
                                         "name" => "description",
                                         "class" => "form-control",
                                         "value" => $department_info->description,
+                                        "style" => "height:150px;",
                                         "placeholder" => app_lang('description'),
                                         "data-rich-text-editor" => true
                                     ));
