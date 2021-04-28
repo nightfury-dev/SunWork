@@ -147,12 +147,13 @@ class Departments extends Security_Controller {
         $status = $this->request->getPost('status');
         $file = $this->request->getFile('department_icon');
         $filepath = "";
-        if ($file && $file->isValid())
-        {
-            $file_ext = $file->getClientExtension();
-            $newName = $file->getRandomName();
-            $file->move('files/department_icon', $newName);
-            $filepath = $newName;
+
+        $profile_image = str_replace("~", ":", $this->request->getPost("profile_image"));
+
+        if ($profile_image) {
+            $newName = time().".png";
+            $profile_image = move_temp_file($newName, 'files/department_icon/', "", $profile_image);
+            $filepath = $profile_image['file_name'];
         }
         else {
             if($id) {

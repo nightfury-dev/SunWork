@@ -1,21 +1,53 @@
+<?php echo view("includes/cropbox"); ?>
 <?php echo form_open(get_uri("departments/save"), array("id" => "department-form", "class" => "general-form", "role" => "form")); ?>
 <div class="modal-body clearfix">
     <div class="container-fluid">
         <input type="hidden" name="id" value="<?php echo $model_info->id; ?>" />
         <div class="form-group">
             <div class="row">
-                <label for="department_icon" class="col-md-3"><?php echo app_lang('department_icon'); ?></label>
-                <div class=" col-md-9">
+                <div class="col-md-12">
+                    <label class="department-form-explain">
+                        Departments are where your team communicates. They are best when organized arround a topic -# sales, for example.
+                    </label>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <div class="row">
+                <label for="department_icon" class="department-form-label"><?php echo app_lang('department_icon'); ?></label>
+                <div>
                     <div class="mt10 float-start">
-                        <label for="department_icon" class="btn btn-default btn-sm">
-                            <i data-feather='upload' class="icon-14"></i> <?php echo app_lang("upload"); ?>
-                        </label>
+                        <?php 
+                            $icon_path = '';
+                            if($model_info->icon == '') {
+                                $icon_path = base_url() . '/assets/images/avatar.jpg';
+                            }
+                            else {
+                                $icon_path = base_url() . '/files/department_icon/' . $model_info->icon;
+                            }
+                        ?>
+
+
+                        <div class="department_icon_wrapper">
+                            <img id="profile-image-preview" class="department_icon" src="<?php echo $icon_path; ?>" alt="..."></span>
+                            <span class="department_icon_content">
+                                <i data-feather='camera' class="icon-14"></i>
+                            </span>
+                        </div>
+                        
+                        <input type="hidden" id="profile_image" name="profile_image" value=""  />
+                        
                         <?php
-                        echo form_upload(array(
-                            "id" => "department_icon",
-                            "name" => "department_icon",
-                            "class" => "no-outline hidden-input-file",
-                        ));
+                            echo form_upload(array(
+                                "id" => "department_icon",
+                                "name" => "department_icon",
+                                "class" => "no-outline hidden-input-file",
+                                "data-height" => "200", 
+                                "data-width" => "200", 
+                                "data-preview-container" => "#profile-image-preview",
+                                "data-input-field" => "#profile_image"
+                            ));
                         ?>
                     </div>
                 </div>
@@ -23,8 +55,8 @@
         </div>  
         <div class="form-group">
             <div class="row">
-                <label for="name" class=" col-md-3"><?php echo app_lang('name'); ?></label>
-                <div class=" col-md-9">
+                <label for="name" class="department-form-label"><?php echo app_lang('name'); ?></label>
+                <div>
                     <?php
                     echo form_input(array(
                         "id" => "name",
@@ -42,26 +74,29 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <label for="description" class=" col-md-3"><?php echo app_lang('description'); ?></label>
-                <div class=" col-md-9">
+                <label for="description" class="department-form-label"><?php echo app_lang('description'); ?></label>
+                <div>
                     <?php
-                    echo form_input(array(
+                    echo form_textarea(array(
                         "id" => "description",
                         "name" => "description",
                         "value" => $model_info->description,
                         "class" => "form-control",
                         "placeholder" => app_lang('description'),
+                        "style" => "height:150px;",
+                        "data-rich-text-editor" => true,
                         "data-rule-required" => true,
                         "data-msg-required" => app_lang("field_required"),
                     ));
                     ?>
                 </div>
+                <label class="department-form-explain mt20">What is this department about?</label>
             </div>
         </div>
         <div class="form-group">
             <div class="row">
-                <label class="col-md-3"><?php echo app_lang('add_people'); ?></label>
-                <div class="col-md-9">
+                <label class="department-form-label"><?php echo app_lang('add_people'); ?></label>
+                <div>
                     <!-- <div class="member_wrapper">
                         <div class="row">
                             <div class="col-md-10">
@@ -84,6 +119,7 @@
                             <i data-feather='plus-circle' class="icon-14"></i> <?php // echo app_lang("upload"); ?>
                         </span>
                     </div> -->
+                    <label class="department-form-explain"># worksson office</label>
                     <?php
                          echo form_input(array(
                             "id" => "members_id",
@@ -99,21 +135,28 @@
 
         <div class="form-group">
             <div class="row">
-                <label for="private" class="col-md-3"><?php echo app_lang('private'); ?></label>
-                <div class=" col-md-9">
-                    <?php
-                        echo form_checkbox(
-                            "private", "1", $model_info->private, "id='private' class='form-check-input'"
-                        );
-                    ?>
+                <label class="department-form-label"><?php echo app_lang('private'); ?></label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <p class="department-form-explain" style="width: 50%;">
+                        When a department is set to private, it can only be viewed or joined by invitation
+                    </p>
+                    <label class="switch">
+                        <?php
+                            echo form_checkbox(
+                                "private", "1", $model_info->private, "id='private' class='custom-control-input'"
+                            );
+                        ?>
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
         </div>
+
         <?php if ($model_info->id) { ?>
             <div class="form-group">
                 <div class="row">
-                    <label for="status" class=" col-md-3"><?php echo app_lang('status'); ?></label>
-                    <div class=" col-md-9">
+                    <label for="status" class="department-form-label"><?php echo app_lang('status'); ?></label>
+                    <div>
                         <?php
                         echo form_dropdown("status", array("open" => app_lang("open"), "canceled" => app_lang("canceled")), array($model_info->status), "class='select2'");
                         ?>
@@ -121,6 +164,17 @@
                 </div>
             </div>
         <?php } ?>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    <span>
+                        <i data-feather='help-circle' class="icon-14"></i> <?php // echo app_lang("upload"); ?>
+                        <span class="department-form-info">Learn More</span>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -149,5 +203,15 @@
             multiple: true, 
             data: <?php echo json_encode($all_persons); ?>
         });
+
+        $(".department_icon").on('click', function(e) {
+            $("#department_icon").click();
+        });
+
+        $("#department_icon").on('change', function() {
+            if (typeof FileReader == 'function') {
+                showCropBox(this);
+            } 
+        })
     });
 </script>    

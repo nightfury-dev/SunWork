@@ -5,7 +5,7 @@
                 <div class="title-button-group">
                     <?php
                     // if (isset($can_create_projects) && $can_create_projects) {
-                        echo modal_anchor(get_uri("departments/modal_form"), "<i data-feather='plus-circle' class='icon-16'></i> " . app_lang('add_department'), array("class" => "btn btn-default", "data-post-created_by" => $created_by, "title" => app_lang('add_department')));
+                        echo modal_anchor(get_uri("departments/modal_form"), "<i data-feather='plus-circle' class='icon-16'></i> " . app_lang('create_department'), array("class" => "btn btn-default", "data-post-created_by" => $created_by, "title" => app_lang('create_department')));
                     // }
                     ?>
                 </div>

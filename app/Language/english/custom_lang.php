@@ -7,7 +7,7 @@ $lang['department'] = "Departments";
 $lang['work_feed'] = "Work Feed";
 $lang['job'] = "Jobs";
 
-$lang['add_department'] = "Add Department";
+$lang['create_department'] = "Create a Department";
 $lang['edit_department'] = "Edit Department";
 $lang['delete_department'] = "Delete Department";
 $lang['name'] = "Name";
