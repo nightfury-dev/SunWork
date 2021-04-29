@@ -20,6 +20,11 @@ class Departments_model extends Crud_model {
             $where .= " AND $departments_table.id=$id";
         }
 
+        $name = get_array_value($options, "name");
+        if ($name) {
+            $where .= " AND $departments_table.name='$name'";
+        }
+
         $created_by = get_array_value($options, "created_by");
         if ($created_by) {
             $where .= " AND $departments_table.created_by=$created_by";

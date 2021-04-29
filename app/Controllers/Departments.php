@@ -105,9 +105,9 @@ class Departments extends Security_Controller {
         // }
 
         $row_data = array(
-            anchor(get_uri("departments/view/" . $data->id), $data->id),
+            anchor(get_uri("departments/view/" . $data->name), $data->id),
             $data->icon != '' ? "<span class='avatar avatar-xs mr10'><img src='". base_url()."/files/department_icon/". $data->icon ."' alt='...'></span>" : "",
-            $data->name,
+            anchor(get_uri("departments/view/" . $data->name), $data->name),
             $data->description,
             $data->created_at,
             $data->status,
@@ -217,14 +217,14 @@ class Departments extends Security_Controller {
         }
     }
 
-    function view($department_id = 0) {
-        $view_data = $this->_get_department_info_data($department_id);
+    function view($department_name = "") {
+        $view_data = $this->_get_department_info_data($department_name);
         return $this->template->rander("department/view", $view_data);
     }
 
-    private function _get_department_info_data($department_id) {
+    private function _get_department_info_data($department_name) {
         $options = array(
-            "id" => $department_id,
+            "name" => $department_name,
         );
 
         $department_info = $this->Departments_model->get_details($options)->getRow();
