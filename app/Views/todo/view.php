@@ -6,6 +6,12 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <div  class="col-md-12">
+                <strong><?php echo $department; ?></strong>
+            </div>
+        </div>
+
         <div class="col-md-12 mb15">
             <?php
             $date = "";

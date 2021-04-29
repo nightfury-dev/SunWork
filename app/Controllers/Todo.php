@@ -29,6 +29,15 @@ class Todo extends Security_Controller {
             $this->validate_access($view_data['model_info']);
         }
 
+        $all_departments = $this->Departments_model->get_details(array())->getResult();
+        $departments_list = array();
+        $departments_list[""] = "Select the department";
+        for($i=0; $i<count($all_departments); $i++) {
+            $departments_list[$all_departments[$i]->id] = $all_departments[$i]->name;
+        }
+
+        $view_data['departments'] = $departments_list;
+
         $view_data['label_suggestions'] = $this->make_labels_dropdown("to_do", $view_data['model_info']->labels);
         return $this->template->view('todo/modal_form', $view_data);
     }
@@ -36,7 +45,8 @@ class Todo extends Security_Controller {
     function save() {
         $this->validate_submitted_data(array(
             "id" => "numeric",
-            "title" => "required"
+            "title" => "required",
+            "department" => "required"
         ));
 
         $id = $this->request->getPost('id');
@@ -44,6 +54,7 @@ class Todo extends Security_Controller {
         $data = array(
             "title" => $this->request->getPost('title'),
             "description" => $this->request->getPost('description') ? $this->request->getPost('description') : "",
+            "department" => $this->request->getPost('department'),
             "created_by" => $this->login_user->id,
             "labels" => $this->request->getPost('labels') ? $this->request->getPost('labels') : "",
             "start_date" => $this->request->getPost('start_date'),
@@ -153,6 +164,15 @@ class Todo extends Security_Controller {
             $title .= "<span class='float-end'>" . $todo_labels . "</span>";
         }
 
+        $department_id = $data->department;
+        $option = array(
+            'id' => $department_id
+        );
+        $department_record = $this->Departments_model->get_details($option)->getRow();
+        $department = "---";
+        if($department_record) {
+            $department = $department_record->name;
+        }
 
         $status_class = "";
         $checkbox_class = "checkbox-blank";
@@ -180,6 +200,7 @@ class Todo extends Security_Controller {
             $status_class,
             "<i class='hide'>" . $data->id . "</i>" . $check_status,
             $title,
+            $department,
             $data->start_date,
             $start_date_text,
             modal_anchor(get_uri("todo/modal_form"), "<i data-feather='edit' class='icon-16'></i>", array("class" => "edit", "title" => app_lang('edit'), "data-post-id" => $data->id))
@@ -194,8 +215,19 @@ class Todo extends Security_Controller {
 
         $model_info = $this->Todo_model->get_details(array("id" => $this->request->getPost('id')))->getRow();
 
+        $department_id = $data->department;
+        $option = array(
+            'id' => $department_id
+        );
+        $department_record = $this->Departments_model->get_details($option)->getRow();
+        $department = "---";
+        if($department_record) {
+            $department = $department_record->name;
+        }
+
         $this->validate_access($model_info);
 
+        $view_data['department'] = $department;
         $view_data['model_info'] = $model_info;
         return $this->template->view('todo/view', $view_data);
     }

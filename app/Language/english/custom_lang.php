@@ -17,6 +17,7 @@ $lang['description'] = "Description";
 $lang['icon'] = "Icon";
 $lang['add_people'] = "Add People";
 $lang['members'] = 'Select Members';
+$lang['add_todo'] = "Add Todo";
 // end modified by alex
 
 return $lang;
