@@ -28,11 +28,15 @@
             optionVisibility = true;
         }
 
+        console.log(optionVisibility);
+        console.log('aaa');
+        alert();
+
         var selectOpenStatus = true, selectCompletedStatus = false;
-<?php if (isset($status) && $status == "completed") { ?>
+        <?php if (isset($status) && $status == "completed") { ?>
             selectOpenStatus = false;
             selectCompletedStatus = true;
-<?php } ?>
+        <?php } ?>
 
         $("#project-table").appTable({
             source: '<?php echo_uri("projects/list_data") ?>',
@@ -62,13 +66,14 @@
                 {title: '<?php echo app_lang("title") ?>'},
                 {title: '<?php echo app_lang("client") ?>', "class": "w10p"},
                 {visible: optionVisibility, title: '<?php echo app_lang("price") ?>', "class": "w10p"},
+                {title: '<?php echo app_lang("department") ?>', "class": "w15p"},
                 {visible: false, searchable: false},
                 {title: '<?php echo app_lang("start_date") ?>', "class": "w10p", "iDataSort": 4},
                 {visible: false, searchable: false},
                 {title: '<?php echo app_lang("deadline") ?>', "class": "w10p", "iDataSort": 6},
                 {title: '<?php echo app_lang("progress") ?>', "class": "w10p"},
                 {title: '<?php echo app_lang("status") ?>', "class": "w10p"}
-<?php echo $custom_field_headers; ?>,
+                <?php echo $custom_field_headers; ?>,
                 {visible: optionVisibility, title: '<i data-feather="menu" class="icon-16"></i>', "class": "text-center option w100"}
             ],
             order: [[1, "desc"]],

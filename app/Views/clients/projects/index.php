@@ -50,10 +50,10 @@ if (!isset($project_labels_dropdown)) {
 <script type="text/javascript">
     $(document).ready(function () {
         var hideTools = "<?php
-if (isset($page_type) && $page_type === 'dashboard') {
-    echo 1;
-}
-?>" || 0;
+        if (isset($page_type) && $page_type === 'dashboard') {
+            echo 1;
+        }
+        ?>" || 0;
 
 
         var filters = [{name: "project_label", class: "w200", options: <?php echo $project_labels_dropdown; ?>}];
@@ -67,7 +67,7 @@ if (isset($page_type) && $page_type === 'dashboard') {
         if ("<?php echo get_setting("client_can_edit_projects"); ?>") {
             optionVisibility = true;
         }
-
+        console.log(optionVisibility)
 
         $("#project-table").appTable({
             source: '<?php echo_uri("projects/projects_list_data_of_client/" . $client_id) ?>',
@@ -90,6 +90,7 @@ if (isset($page_type) && $page_type === 'dashboard') {
                 {title: '<?php echo app_lang("id") ?>', "class": "w50"},
                 {title: '<?php echo app_lang("title") ?>'},
                 {targets: [2], visible: false, searchable: false},
+                {title: '<?php echo app_lang("department") ?>', "class": "w15p"},
                 {title: '<?php echo app_lang("price") ?>', "class": "w10p"},
                 {visible: false, searchable: false},
                 {title: '<?php echo app_lang("start_date") ?>', "class": "w10p", "iDataSort": 4},
@@ -97,7 +98,7 @@ if (isset($page_type) && $page_type === 'dashboard') {
                 {title: '<?php echo app_lang("deadline") ?>', "class": "w10p", "iDataSort": 6},
                 {title: '<?php echo app_lang("progress") ?>', "class": "w15p"},
                 {title: '<?php echo app_lang("status") ?>', "class": "w10p"}
-<?php echo $custom_field_headers; ?>,
+                <?php echo $custom_field_headers; ?>,
                 {visible: optionVisibility, title: '<i data-feather="menu" class="icon-16"></i>', "class": "text-center option w100"}
             ],
             printColumns: combineCustomFieldsColumns([0, 1, 3, 5, 7, 9], '<?php echo $custom_field_headers; ?>'),

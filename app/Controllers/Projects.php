@@ -337,7 +337,15 @@ class Projects extends Security_Controller {
             }
         }
 
+        $all_departments = $this->Departments_model->get_details(array())->getResult();
+        $departments_list = array();
+        $departments_list[""] = "Select the department";
+        for($i=0; $i<count($all_departments); $i++) {
+            $departments_list[$all_departments[$i]->id] = $all_departments[$i]->name;
+        }
 
+        $view_data['departments'] = $departments_list;
+        
         $view_data["client_id"] = $client_id;
         $view_data['model_info'] = $this->Projects_model->get_one($project_id);
         if ($client_id) {
@@ -385,6 +393,7 @@ class Projects extends Security_Controller {
         $data = array(
             "title" => $this->request->getPost('title'),
             "description" => $this->request->getPost('description'),
+            "department" => $this->request->getPost('department'),
             "client_id" => $this->request->getPost('client_id'),
             "start_date" => $this->request->getPost('start_date'),
             "deadline" => $this->request->getPost('deadline'),
@@ -446,7 +455,7 @@ class Projects extends Security_Controller {
                     $this->Estimates_model->ci_save($data, $estimate_id);
                 }
 
-                log_notification("project_created", array("project_id" => $save_id));
+                // log_notification("project_created", array("project_id" => $save_id));
             }
             echo json_encode(array("success" => true, "data" => $this->_row_data($save_id), 'id' => $save_id, 'message' => app_lang('record_saved')));
         } else {
@@ -843,6 +852,16 @@ class Projects extends Security_Controller {
         $dateline = is_date_exists($data->deadline) ? format_to_date($data->deadline, false) : "-";
         $price = $data->price ? to_currency($data->price, $data->currency_symbol) : "-";
 
+        $department = $data->department;
+        $option = array(
+            'id' => $department
+        );
+        $department_record = $this->Departments_model->get_details($options)->getRow();
+        $department = "";
+        if($department_record) {
+            $department = $department_record->name;
+        }
+        
         //has deadline? change the color of date based on status
         if (is_date_exists($data->deadline)) {
             if ($progress !== 100 && $data->status === "open" && get_my_local_time("Y-m-d") > $data->deadline) {
@@ -877,6 +896,7 @@ class Projects extends Security_Controller {
             anchor(get_uri("projects/view/" . $data->id), $data->id),
             $title,
             anchor(get_uri("clients/view/" . $data->client_id), $data->company_name),
+            $department,
             $price,
             $data->start_date,
             $start_date,
