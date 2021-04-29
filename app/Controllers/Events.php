@@ -53,6 +53,15 @@ class Events extends Security_Controller {
             $view_data['client_id'] = $client_info->id;
         }
 
+        $all_departments = $this->Departments_model->get_details(array())->getResult();
+        $departments_list = array();
+        $departments_list[""] = "Select the department";
+        for($i=0; $i<count($all_departments); $i++) {
+            $departments_list[$all_departments[$i]->id] = $all_departments[$i]->name;
+        }
+
+        $view_data['departments'] = $departments_list;
+
         $view_data['model_info'] = $model_info;
         $view_data['members_and_teams_dropdown'] = json_encode(get_team_members_and_teams_select2_data_list());
         $view_data['time_format_24_hours'] = get_setting("time_format") == "24_hours" ? true : false;
@@ -83,6 +92,7 @@ class Events extends Security_Controller {
         $this->validate_submitted_data(array(
             "title" => "required",
             "description" => "required",
+            "department" => "required",
             "start_date" => "required",
             "end_date" => "required"
         ));
@@ -118,6 +128,7 @@ class Events extends Security_Controller {
         $data = array(
             "title" => $this->request->getPost('title'),
             "description" => $this->request->getPost('description'),
+            "department" => $this->request->getPost('department'),
             "start_date" => $start_date,
             "end_date" => $this->request->getPost('end_date'),
             "start_time" => $start_time,
@@ -491,6 +502,16 @@ class Events extends Security_Controller {
             $view_data['event_icon'] = get_event_icon($model_info->share_with);
             $view_data['custom_fields_list'] = $this->Custom_fields_model->get_combined_details("events", $event_id, $this->login_user->is_admin, $this->login_user->user_type)->getResult();
 
+            $department_id = $model_info->department;
+            $option = array(
+                'id' => $department_id
+            );
+            $department_record = $this->Departments_model->get_details($option)->getRow();
+            $department = "---";
+            if($department_record) {
+                $department = $department_record->name;
+            }
+            $view_data['department'] = $department;
 
             $confirmed_by_array = explode(",", $model_info->confirmed_by);
             $rejected_by_array = explode(",", $model_info->rejected_by);

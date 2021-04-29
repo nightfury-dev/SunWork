@@ -370,7 +370,6 @@ class Projects extends Security_Controller {
     /* insert or update a project */
 
     function save() {
-
         $id = $this->request->getPost('id');
 
         if ($id) {
@@ -384,7 +383,8 @@ class Projects extends Security_Controller {
         }
 
         $this->validate_submitted_data(array(
-            "title" => "required"
+            "title" => "required",
+            "department" => "required"
         ));
 
         $estimate_id = $this->request->getPost('estimate_id');

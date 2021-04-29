@@ -60,17 +60,20 @@
         </div>
 
         <div class="form-group">
-                <div class="row">
-                    <label for="department" class=" col-md-3"><?php echo app_lang('department'); ?></label>
-                    <div class=" col-md-9">
-                        <?php
-                        echo form_dropdown("department", 
-                            $departments, 
-                            array($model_info->department), "class='select2'");
-                        ?>
-                    </div>
+            <div class="row">
+                <label for="department" class=" col-md-3"><?php echo app_lang('department'); ?></label>
+                <div class=" col-md-9">
+                    <?php
+                    echo form_dropdown(
+                        "department", 
+                        $departments, 
+                        array($model_info->department), 
+                        "class='select2 validate-hidden' data-rule-required='true', data-msg-required='" . app_lang('field_required') . "'"
+                    );
+                    ?>
                 </div>
             </div>
+        </div>
 
         <div class="form-group">
             <div class="row">

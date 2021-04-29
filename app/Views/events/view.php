@@ -23,7 +23,10 @@
                         <?php echo anchor(get_uri("events/show_event_in_google_calendar/$model_info->google_event_id"), app_lang("open_in_google_calendar"), array("target" => "_blank")); ?>
                     </div>
                 <?php } ?>
+            </div>
 
+            <div class="col-md-12 pb10">
+                <?php echo "<span style='color:" . $model_info->color . "' class='float-start mr10'><i data-feather='grid' class='icon-16'></i></span> " . $department; ?>
             </div>
 
             <?php if ($status) { ?>
