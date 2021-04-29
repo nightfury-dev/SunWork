@@ -852,12 +852,12 @@ class Projects extends Security_Controller {
         $dateline = is_date_exists($data->deadline) ? format_to_date($data->deadline, false) : "-";
         $price = $data->price ? to_currency($data->price, $data->currency_symbol) : "-";
 
-        $department = $data->department;
+        $department_id = $data->department;
         $option = array(
-            'id' => $department
+            'id' => $department_id
         );
-        $department_record = $this->Departments_model->get_details($options)->getRow();
-        $department = "";
+        $department_record = $this->Departments_model->get_details($option)->getRow();
+        $department = "---";
         if($department_record) {
             $department = $department_record->name;
         }
