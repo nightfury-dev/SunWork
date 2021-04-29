@@ -972,7 +972,7 @@ class Projects extends Security_Controller {
 
         $project_info = $this->Projects_model->get_details($options)->getRow();
         $view_data['project_info'] = $project_info;
-
+        
         if ($project_info) {
             $view_data['project_info'] = $project_info;
             $timer = $this->Timesheets_model->get_timer_info($project_id, $this->login_user->id)->getRow();
