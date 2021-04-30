@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    <ul id="client-contact-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs scrollable-tabs b-b rounded-0" role="tablist">
+    <ul id="departments-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs scrollable-tabs b-b rounded-0" role="tablist">
         <li><a  role="presentation" href="<?php echo_uri("departments/work_feed_tab/" . $department_info->id); ?>" data-bs-target="#tab-workfeed"> <?php echo app_lang('work_feed'); ?></a></li>
         <li><a  role="presentation" href="<?php echo_uri("departments/people_tab/" . $department_info->id); ?>" data-bs-target="#tab-people"> <?php echo app_lang('people'); ?></a></li>
         <li><a  role="presentation" href="<?php echo_uri("departments/todo_tab/" . $department_info->id); ?>" data-bs-target="#tab-todo"> <?php echo app_lang('todo'); ?></a></li>

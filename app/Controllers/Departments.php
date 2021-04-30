@@ -256,49 +256,49 @@ class Departments extends Security_Controller {
     function work_feed_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/workfeed_tab', $view_data);    
+            return $this->template->view('department/tabs/workfeed_tab', $view_data);    
         }
     }
 
     function people_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/people_tab', $view_data);    
+            return $this->template->view('department/tabs/people_tab', $view_data);    
         }
     }
 
     function todo_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/todo_tab', $view_data);    
+            return $this->template->view('department/tabs/todo_tab', $view_data);    
         }
     }
 
     function project_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/project_tab', $view_data);    
+            return $this->template->view('department/tabs/project_tab', $view_data);    
         }
     }
 
     function job_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/job_tab', $view_data);    
+            return $this->template->view('department/tabs/job_tab', $view_data);    
         }
     }
 
     function event_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/event_tab', $view_data);    
+            return $this->template->view('department/tabs/event_tab', $view_data);    
         }
     }
 
     function more_tab($department_id = 0) {
         if($department_id) {
             $view_data = array();
-            return $this->template->view('departments/tabs/more_tab', $view_data);    
+            return $this->template->view('department/tabs/more_tab', $view_data);    
         }
     }
 }

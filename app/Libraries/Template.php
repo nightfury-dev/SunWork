@@ -35,7 +35,6 @@ class Template {
         }
 
         $view_data = array_merge($view_data, $data);
-
         return view($view, $view_data);
     }
 
