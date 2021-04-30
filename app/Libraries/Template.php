@@ -27,6 +27,7 @@ class Template {
         $view_data = array();
 
         $users_model = model("App\Models\Users_model", false);
+        
         if ($users_model->login_user_id()) {
             //user logged in, prepare login user data
             $Security_Controller = new Security_Controller(false);
