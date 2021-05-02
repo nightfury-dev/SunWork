@@ -22,6 +22,21 @@ class Template {
         return $this->view('layout/index', $view_data);
     }
 
+    public function client_rander($view, $data = array()) {
+        $view_data['content_view'] = $view;
+        $view_data['topbar'] = "includes/topbar";
+        $view_data['account_type'] = "client";
+
+        if (!isset($data["left_menu"])) {
+            $left_menu = new Left_menu();
+            $view_data['left_menu'] = $left_menu->rander_left_menu();
+        }
+
+        $view_data = array_merge($view_data, $data);
+
+        return $this->view('layout/client', $view_data);
+    }
+
     //use this method instead of default view() to pass necessary variables
     public function view($view, $data = array()) {
         $view_data = array();

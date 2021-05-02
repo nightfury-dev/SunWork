@@ -19,6 +19,23 @@ $lang['add_people'] = "Add People";
 $lang['members'] = 'Select Members';
 $lang['add_todo'] = "Add Todo";
 $lang['people'] = "People";
+
+//message
+$lang['myinbox'] = "My InBox";
+$lang['starred_message'] = "Starred Messages";
+$lang['sent_message'] = "Sent Messages";
+$lang['draft_message'] = "Draft Messages";
+$lang['trash_message'] = "Trash Message";
+$lang['category_message'] = "Categories";
+$lang['create_new_label'] = "Create New Label";
+
+//job
+$lang['all_job'] = "All Jobs Listing";
+$lang['my_job'] = "My Jobs Listing";
+$lang['hire_history'] = "My Hiring History";
+$lang['job_listing_plan'] = "Job Listing Plan";
+$lang['skill_test'] = "Skill Testing";
+
 // end modified by alex
 
 return $lang;
