@@ -14,11 +14,7 @@ class Departments extends Security_Controller {
 
     /* load timeline view */
 
-    function index() {
-        app_redirect("departments/all_departments");
-    }
-
-    function all_departments($status = "") {
+    function index($status = "") {
         $view_data['department_labels_dropdown'] = json_encode($this->make_labels_dropdown("department" , "", true));
         // $view_data["can_create_projects"] = $this->can_create_projects();
         $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("departments", $this->login_user->is_admin, $this->login_user->user_type);
