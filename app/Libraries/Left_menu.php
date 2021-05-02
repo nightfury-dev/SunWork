@@ -14,7 +14,6 @@ class Left_menu {
 
     function get_available_items($type = "default") {
         $items_array = $this->_prepare_sidebar_menu_items($type);
-        
         //remove used items
         $default_left_menu_items = $this->_get_left_menu_from_setting($type);
 
@@ -33,10 +32,10 @@ class Left_menu {
     private function _prepare_sidebar_menu_items($type = "") {
         $final_items_array = array();
         $items_array = $this->_get_sidebar_menu_items($type);
-        
-        foreach($items_array as $item) {
+
+        foreach($items_array as $item) {            
             $main_menu_name = get_array_value($item, "name");
-        
+
             if (isset($item["submenu"])) {
                 //first add this menu removing the submenus
                 if ($main_menu_name !== "finance" && $main_menu_name !== "help_and_support") {
@@ -209,18 +208,17 @@ class Left_menu {
             $view_data["sidebar_menu"] = $this->_get_sidebar_menu_items($type);
         }
 
-        // print_r($view_data["sidebar_menu"]);
-        // exit(1);
-
         $view_data["is_preview"] = $is_preview;
         $view_data["login_user"] = $this->ci->login_user;
 
-        if($this->ci->login_user->user_type == "staff") {
-            return view("includes/left_menu", $view_data);
-        }
-        else if($this->ci->login_user->user_type == "client") {
-            return view("includes/client/left_menu", $view_data);
-        }
+        // if($this->ci->login_user->user_type == "staff") {
+        //     return view("includes/left_menu", $view_data);
+        // }
+        // else if($this->ci->login_user->user_type == "client") {
+        //     return view("includes/client/left_menu", $view_data);
+        // }
+
+        return view("includes/left_menu", $view_data);
         
     }
 
@@ -242,15 +240,11 @@ class Left_menu {
 
     private function _get_sidebar_menu_items($type = "") {
         $dashboard_menu = array("name" => "dashboard", "url" => "dashboard", "class" => "home");
-
         $selected_dashboard_id = get_setting("user_" . $this->ci->login_user->id . "_dashboard");
-        // print_r($this->ci->login_user->id);
-        // exit(1);
-
+        
         if ($selected_dashboard_id) {
             $dashboard_menu = array("name" => "dashboard", "url" => "dashboard/view/" . $selected_dashboard_id, "class" => "home", "custom_class" => "dashboard-menu");
         }
-
         if ($this->ci->login_user->user_type == "staff" && $type !== "client_default") {
 
             $sidebar_menu = array("dashboard" => $dashboard_menu);
@@ -475,73 +469,82 @@ class Left_menu {
 
             $sidebar_menu[] = $dashboard_menu;
 
+            
             if (get_setting("module_department") == "1") {
-                $sidebar_menu[] = array("name" => "department", "url" => "departments", "class" => "border-all");
+                // $sidebar_menu[] = array("name" => "department", "url" => "departments", "class" => "border-all");
+                $sidebar_menu[] = array("name" => "department", "url" => "departments", "class" => "grid");
             }
 
-            // if (get_setting("module_work_feed") == "1") {
-            //     $sidebar_menu[] = array("name" => "work_feed", "url" => "workfeed", "class" => "upload");
-            // }
+            if (get_setting("module_work_feed") == "1") {
+                // $sidebar_menu[] = array("name" => "work_feed", "url" => "workfeed", "class" => "upload");
+                $sidebar_menu[] = array("name" => "work_feed", "url" => "workfeed", "class" => "send");
+            }
 
             if (get_setting("module_job") == "1") {
-                $job_submenu[] = array('name' => 'all_job', 'url' => '#');
-                $job_submenu[] = array('name' => 'my_job', 'url' => '#');
-                $job_submenu[] = array('name' => 'hire_history', 'url' => '#');
-                $job_submenu[] = array('name' => 'job_listing_plan', 'url' => '#');
-                $job_submenu[] = array('name' => 'skill_test', 'url' => '#');
+                // $job_submenu[] = array('name' => 'all_job', 'url' => '#');
+                // $job_submenu[] = array('name' => 'my_job', 'url' => '#');
+                // $job_submenu[] = array('name' => 'hire_history', 'url' => '#');
+                // $job_submenu[] = array('name' => 'job_listing_plan', 'url' => '#');
+                // $job_submenu[] = array('name' => 'skill_test', 'url' => '#');
 
-                $sidebar_menu[] = array("name" => "job", "url" => "jobs", "class" => "briefcase", "submenu"=>$job_submenu);
+                // $sidebar_menu[] = array("name" => "job", "url" => "jobs", "class" => "briefcase", "submenu"=>$job_submenu);
+                $sidebar_menu[] = array("name" => "job", "url" => "jobs", "class" => "briefcase");
             }
             
-            // if (get_setting("module_event") == "1" && !in_array("events", $hidden_menu)) {
-            //     $sidebar_menu[] = array("name" => "events", "url" => "events", "class" => "calendar");
-            // }
+            if (get_setting("module_event") == "1" && !in_array("events", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "events", "url" => "events", "class" => "calendar");
+            }
 
             //check message access settings for clients
             if (get_setting("module_message") && get_setting("client_message_users")) {
-                $message_submenu[] = array('name' => 'myinbox', 'url' => 'message/myinbox');
-                $message_submenu[] = array('name' => 'starred_message', 'url' => 'message/starred_message');
-                $message_submenu[] = array('name' => 'sent_message', 'url' => 'message/sent_message');
-                $message_submenu[] = array('name' => 'draft_message', 'url' => 'message/draft_message');
-                $message_submenu[] = array('name' => 'trash_message', 'url' => 'message/trash_message');
-                $message_submenu[] = array('name' => 'category_message', 'url' => 'message/category_message');
-                $message_submenu[] = array('name' => 'create_new_label', 'url' => 'message/create_new_label');
+                // $message_submenu[] = array('name' => 'myinbox', 'url' => 'message/myinbox');
+                // $message_submenu[] = array('name' => 'starred_message', 'url' => 'message/starred_message');
+                // $message_submenu[] = array('name' => 'sent_message', 'url' => 'message/sent_message');
+                // $message_submenu[] = array('name' => 'draft_message', 'url' => 'message/draft_message');
+                // $message_submenu[] = array('name' => 'trash_message', 'url' => 'message/trash_message');
+                // $message_submenu[] = array('name' => 'category_message', 'url' => 'message/category_message');
+                // $message_submenu[] = array('name' => 'create_new_label', 'url' => 'message/create_new_label');
 
-                $sidebar_menu[] = array("name" => "messages", "url" => "messages", "class" => "envelope", "badge" => count_unread_message(), "submenu"=>$message_submenu);
+                // $sidebar_menu[] = array("name" => "messages", "url" => "messages", "class" => "envelope", "badge" => count_unread_message(), "submenu"=>$message_submenu);
+                $sidebar_menu[] = array("name" => "messages", "url" => "messages", "class" => "mail", "badge" => count_unread_message());
             }
 
-            $sidebar_menu[] = array("name" => "chat", "url" => "chat", "class" => "comment");
+            // $sidebar_menu[] = array("name" => "chat", "url" => "chat", "class" => "comment");
 
-            // if (!in_array("projects", $hidden_menu)) {
-            //     $sidebar_menu[] = array("name" => "projects", "url" => "projects/all_projects", "class" => "project-diagram");
-            // }
+            if (!in_array("projects", $hidden_menu)) {
+                // $sidebar_menu[] = array("name" => "projects", "url" => "projects/all_projects", "class" => "project-diagram");
+                $sidebar_menu[] = array("name" => "projects", "url" => "projects/all_projects", "class" => "grid");
+            }
 
 
-            // if (get_setting("module_estimate") && !in_array("estimates", $hidden_menu)) {
-            //     $sidebar_menu[] = array("name" => "estimates", "url" => "estimates", "class" => "file");
-            // }
+            if (get_setting("module_estimate") && !in_array("estimates", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "estimates", "url" => "estimates", "class" => "file");
+            }
 
-            // if (get_setting("module_invoice") == "1") {
-            //     if (!in_array("invoices", $hidden_menu)) {
-            //         $sidebar_menu[] = array("name" => "invoices", "url" => "invoices", "class" => "file-invoice");
-            //     }
-            //     if (!in_array("payments", $hidden_menu)) {
-            //         $sidebar_menu[] = array("name" => "invoice_payments", "url" => "invoice_payments", "class" => "dollar-sign");
-            //     }
-            // }
+            if (get_setting("module_invoice") == "1") {
+                if (!in_array("invoices", $hidden_menu)) {
+                    // $sidebar_menu[] = array("name" => "invoices", "url" => "invoices", "class" => "file-invoice");
+                    $sidebar_menu[] = array("name" => "invoices", "url" => "invoices", "class" => "file-text");
+                }
+                if (!in_array("payments", $hidden_menu)) {
+                    // $sidebar_menu[] = array("name" => "invoice_payments", "url" => "invoice_payments", "class" => "dollar-sign");
+                    $sidebar_menu[] = array("name" => "invoice_payments", "url" => "invoice_payments", "class" => "dollar-sign");
+                }
+            }
 
-            // if (!in_array("store", $hidden_menu) && get_setting("client_can_access_store")) {
-            //     $sidebar_menu[] = array("name" => "store", "url" => "items/grid_view", "class" => "truck");
-            //     $sidebar_menu[] = array("name" => "orders", "url" => "orders", "class" => "shopping-cart");
-            // }
+            if (!in_array("store", $hidden_menu) && get_setting("client_can_access_store")) {
+                $sidebar_menu[] = array("name" => "store", "url" => "items/grid_view", "class" => "truck");
+                $sidebar_menu[] = array("name" => "orders", "url" => "orders", "class" => "shopping-cart");
+            }
 
-            // if (get_setting("module_ticket") == "1" && !in_array("tickets", $hidden_menu)) {
-            //     $sidebar_menu[] = array("name" => "tickets", "url" => "tickets", "class" => "ticket-alt");
-            // }
+            if (get_setting("module_ticket") == "1" && !in_array("tickets", $hidden_menu)) {
+                // $sidebar_menu[] = array("name" => "tickets", "url" => "tickets", "class" => "ticket-alt");
+                $sidebar_menu[] = array("name" => "tickets", "url" => "tickets", "class" => "life-buoy");
+            }
 
-            // if (get_setting("module_announcement") == "1" && !in_array("announcements", $hidden_menu)) {
-            //     $sidebar_menu[] = array("name" => "announcements", "url" => "announcements", "class" => "bell");
-            // }
+            if (get_setting("module_announcement") == "1" && !in_array("announcements", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "announcements", "url" => "announcements", "class" => "bell");
+            }
 
             $sidebar_menu[] = array("name" => "users", "url" => "clients/users", "class" => "users");
 
@@ -549,11 +552,13 @@ class Left_menu {
                 $sidebar_menu[] = array("name" => "files", "url" => "clients/files/" . $this->ci->login_user->id . "/page_view", "class" => "image");
             }
 
-            $sidebar_menu[] = array("name" => "my_profile", "url" => "clients/contact_profile/" . $this->ci->login_user->id, "class" => "cog");
+            // $sidebar_menu[] = array("name" => "my_profile", "url" => "clients/contact_profile/" . $this->ci->login_user->id, "class" => "cog");
+            $sidebar_menu[] = array("name" => "my_profile", "url" => "clients/contact_profile/" . $this->ci->login_user->id, "class" => "settings");
 
-            // if (get_setting("module_knowledge_base") == "1" && !in_array("knowledge_base", $hidden_menu)) {
-            //     $sidebar_menu[] = array("name" => "knowledge_base", "url" => "knowledge_base", "class" => "question");
-            // }
+            if (get_setting("module_knowledge_base") == "1" && !in_array("knowledge_base", $hidden_menu)) {
+                // $sidebar_menu[] = array("name" => "knowledge_base", "url" => "knowledge_base", "class" => "question");
+                $sidebar_menu[] = array("name" => "knowledge_base", "url" => "knowledge_base", "class" => "help-circle");
+            }
         }
         else if($this->ci->login_user->user_type == "professional") {
             
@@ -562,7 +567,73 @@ class Left_menu {
             
         }
         else {
+            //client menu
+            //get the array of hidden menu
+            $hidden_menu = explode(",", get_setting("hidden_client_menus"));
+            $sidebar_menu[] = $dashboard_menu;
+
+            if (get_setting("module_department") == "1") {
+                $sidebar_menu[] = array("name" => "department", "url" => "departments", "class" => "grid");
+            }
+
+            if (get_setting("module_work_feed") == "1") {
+                $sidebar_menu[] = array("name" => "work_feed", "url" => "workfeed", "class" => "send");
+            }
+
+            if (get_setting("module_job") == "1") {
+                $sidebar_menu[] = array("name" => "job", "url" => "jobs", "class" => "briefcase");
+            }
             
+            if (get_setting("module_event") == "1" && !in_array("events", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "events", "url" => "events", "class" => "calendar");
+            }
+
+            //check message access settings for clients
+            if (get_setting("module_message") && get_setting("client_message_users")) {
+                $sidebar_menu[] = array("name" => "messages", "url" => "messages", "class" => "mail", "badge" => count_unread_message());
+            }
+
+            if (!in_array("projects", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "projects", "url" => "projects/all_projects", "class" => "grid");
+            }
+
+            if (get_setting("module_estimate") && !in_array("estimates", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "estimates", "url" => "estimates", "class" => "file");
+            }
+
+            if (get_setting("module_invoice") == "1") {
+                if (!in_array("invoices", $hidden_menu)) {
+                    $sidebar_menu[] = array("name" => "invoices", "url" => "invoices", "class" => "file-text");
+                }
+                if (!in_array("payments", $hidden_menu)) {
+                    $sidebar_menu[] = array("name" => "invoice_payments", "url" => "invoice_payments", "class" => "dollar-sign");
+                }
+            }
+
+            if (!in_array("store", $hidden_menu) && get_setting("client_can_access_store")) {
+                $sidebar_menu[] = array("name" => "store", "url" => "items/grid_view", "class" => "truck");
+                $sidebar_menu[] = array("name" => "orders", "url" => "orders", "class" => "shopping-cart");
+            }
+
+            if (get_setting("module_ticket") == "1" && !in_array("tickets", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "tickets", "url" => "tickets", "class" => "life-buoy");
+            }
+
+            if (get_setting("module_announcement") == "1" && !in_array("announcements", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "announcements", "url" => "announcements", "class" => "bell");
+            }
+
+            $sidebar_menu[] = array("name" => "users", "url" => "clients/users", "class" => "users");
+
+            if (get_setting("client_can_view_files")) {
+                $sidebar_menu[] = array("name" => "files", "url" => "clients/files/" . $this->ci->login_user->id . "/page_view", "class" => "image");
+            }
+
+            $sidebar_menu[] = array("name" => "my_profile", "url" => "clients/contact_profile/" . $this->ci->login_user->id, "class" => "settings");
+
+            if (get_setting("module_knowledge_base") == "1" && !in_array("knowledge_base", $hidden_menu)) {
+                $sidebar_menu[] = array("name" => "knowledge_base", "url" => "knowledge_base", "class" => "help-circle");
+            }
         }
         return $sidebar_menu;
     }
