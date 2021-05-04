@@ -184,9 +184,9 @@
         element.style.height = "50px";
         element.style.height = (25+element.scrollHeight)+"px";
 
-        if($('.upload_preview').is(':empty') && $(element).val() == '') {
-            $("#post_btn").attr('disabled', 'disabled');
-        }
+        // if($('.upload_preview').is(':empty') && $(element).val() == '') {
+        //     $("#post_btn").attr('disabled', 'disabled');
+        // }
     }
 
     function get_file(event) {
@@ -342,9 +342,9 @@
                     var item = $(obj).parent('.upload_item');
                     $(item).remove();
 
-                    if($('.upload_preview').is(':empty') && $("#post_text").val() == '') {
-                        $("#post_btn").attr('disabled', 'disabled');
-                    }
+                    // if($('.upload_preview').is(':empty') && $("#post_text").val() == '') {
+                    //     $("#post_btn").attr('disabled', 'disabled');
+                    // }
                 }    
             }
         }); 
@@ -656,13 +656,13 @@
         $("#reply_comment_modal #comment_id").val('');
         $("#reply_comment_modal #comment_text").val('');
         $("#reply_comment_modal #reply_image_files").val('');
-        $("#comment_reply_btn").attr('disabled', 'disabled');
+        // $("#comment_reply_btn").attr('disabled', 'disabled');
     }
     
     $(document).ready(function () {
-        $("#post_btn").attr('disabled', 'disabled');
-        $("#comment_send_btn").attr('disabled', 'disabled');
-        $("#comment_reply_btn").attr('disabled', 'disabled');
+        // $("#post_btn").attr('disabled', 'disabled');
+        // $("#comment_send_btn").attr('disabled', 'disabled');
+        // $("#comment_reply_btn").attr('disabled', 'disabled');
 
         $("#comment_section").hide();
 
@@ -760,7 +760,7 @@
                     '</div>';
                     
                     $("#post_section").append(html);
-                    $("#post_btn").attr('disabled', 'disabled');
+                    // $("#post_btn").attr('disabled', 'disabled');
                     $("#post_image_file").val('');
                     $("#post_video_file").val('');
                     $(".upload_preview").empty();
@@ -831,7 +831,7 @@
                                 '</div>';
                     
                     $("#comment_list").prepend(html);
-                    $("#comment_send_btn").attr('disabled', 'disabled');
+                    // $("#comment_send_btn").attr('disabled', 'disabled');
                     $(".comment_upload_preview").empty();
                     $("#comment_image_files").val('');
                     $("#comment_text").val('');
