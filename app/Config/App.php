@@ -494,6 +494,7 @@ class App extends BaseConfig {
 
     // begin majesty's update
     public $department_icon_path = "files/department_icon";
+    public $workfeed_file_path = "files/workfeed_file";
     // end majesty's update
 
     public $check_notification_after_every = "60"; //Check notification after every 60 seconds. Recommanded: don't set this value less than 20.

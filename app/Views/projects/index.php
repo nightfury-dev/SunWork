@@ -28,10 +28,6 @@
             optionVisibility = true;
         }
 
-        console.log(optionVisibility);
-        console.log('aaa');
-        alert();
-
         var selectOpenStatus = true, selectCompletedStatus = false;
         <?php if (isset($status) && $status == "completed") { ?>
             selectOpenStatus = false;

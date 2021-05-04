@@ -302,7 +302,7 @@ class Projects extends Security_Controller {
 
     function all_projects($status = "") {
         $view_data['project_labels_dropdown'] = json_encode($this->make_labels_dropdown("project", "", true));
-
+        
         $view_data["can_create_projects"] = $this->can_create_projects();
 
         $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("projects", $this->login_user->is_admin, $this->login_user->user_type);

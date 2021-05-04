@@ -19,6 +19,7 @@ $lang['add_people'] = "Add People";
 $lang['members'] = 'Select Members';
 $lang['add_todo'] = "Add Todo";
 $lang['people'] = "People";
+$lang['post'] = "Post";
 
 //message
 // $lang['myinbox'] = "My InBox";

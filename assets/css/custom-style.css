@@ -96,3 +96,162 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.publish_text {
+    background:#FFF; 
+    border: none!important;
+    width: 100%;
+}
+
+.publish_text:active, .publish_text:focus{
+    border: none!important;
+    outline: none;
+}
+
+.post-item {
+    border-bottom: 1px solid #eee;
+    padding: 40px 15px;
+}
+
+.post_content {
+    padding-left: 10px;
+    padding-right: 30px;
+    width: 100%;
+}
+
+.post_user_name {
+    color: #333;
+    font-weight: bold;
+}
+
+.post_text {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+    font-weight: 500;
+}
+
+.file_preview_wrapper {
+    width: 100%;
+}
+
+.file_preview {
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.post_tools {
+    margin-top: 20px;
+}
+
+.post_tool_item {
+    margin: 0 15px;
+    cursor: pointer;
+}
+
+.post_tool_item.active {
+    color: red;
+}
+
+.upload_item {
+    position: relative;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.upload_item img, .upload_item video {
+    border: 3px solid #2196F3;
+    border-radius: 10px;
+}
+
+.upload_item_remove {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #2196F3;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: -10px;
+    right: -10px;
+    text-align: center;
+}
+
+.upload_item_remove svg {
+    margin-bottom: 16px;
+}
+
+.comment-item {
+    padding: 15px;
+}
+
+.post_comment_form {
+    width: 100%;
+    padding: 20px;
+    height: 50px;
+    background-color: #eee;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.goto_back {
+    color: #777;
+    size: 14px;
+}
+
+.goto_back:hover {
+    color: #ea3c3c;
+}
+
+.comment_send_btn {
+    color: #777; 
+    cursor: pointer;
+    border: none;
+}
+
+.comment_send_btn:active, .comment_send_btn:focus {
+    outline: none;
+}
+
+.comment-sub-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment-content {
+    width: 100%;
+}
+
+.comment-content-wrapper {
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.comment-content-username {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.comment-content-text {
+    font-size: 12px;
+    text-align: justify;
+}
+
+.comment-content-file {
+    margin-top: 10px;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.comment-tool {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}

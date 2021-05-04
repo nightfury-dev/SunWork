@@ -24,13 +24,13 @@ class App_Controller extends Controller {
 
         //load helpers
         helper(array('url', 'file', 'form', 'language', 'general', 'date_time', 'app_files', 'widget', 'activity_logs', 'currency'));
-
+        
         //models
         $models_array = $this->get_models_array();
         foreach ($models_array as $model) {
             $this->$model = model("App\Models\\" . $model);
         }
-
+        
         $login_user_id = $this->Users_model->login_user_id();
 
         //assign settings from database
@@ -110,7 +110,10 @@ class App_Controller extends Controller {
             'Verification_model',
             'Item_categories_model',
             // new model
-            'Departments_model'
+            'Departments_model',
+            'Workfeed_model',
+            'Workfeed_file_model',
+            'Workfeed_comment_model'
         );
     }
 

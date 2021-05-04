@@ -8,13 +8,12 @@ class Departments extends Security_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->Departments_model = model('App\Models\Departments_model');
-        
     }
 
     /* load timeline view */
 
     function index($status = "") {
+        
         $view_data['department_labels_dropdown'] = json_encode($this->make_labels_dropdown("department" , "", true));
         // $view_data["can_create_projects"] = $this->can_create_projects();
         $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("departments", $this->login_user->is_admin, $this->login_user->user_type);
@@ -251,7 +250,78 @@ class Departments extends Security_Controller {
 
     function work_feed_tab($department_id = 0) {
         if($department_id) {
-            $view_data = array();
+            $options = array(
+                "department_id" => $department_id,
+            );
+    
+            $data = $this->Workfeed_model->get_details($options)->getResult();
+
+            for($i=0; $i<count($data); $i++) {
+                $files = $data[$i]->files;
+                $file_arr = explode(':', $files);
+                
+                $temp = array();
+                for($j=0; $j<count($file_arr); $j++) {
+                    $file_options = array(
+                        'id' => $file_arr[$j]
+                    );
+        
+                    $file_data = $this->Workfeed_file_model->get_details($file_options)->getRow();
+                    $file_name = $file_data->name;
+                    array_push($temp, $file_name);
+                }
+        
+                $data[$i]->files = $temp;
+        
+                $comment_option = array(
+                    'parent_id' => $data[$i]->id
+                );
+                $comments_data = $this->Workfeed_comment_model->get_details($comment_option)->getResult();
+                $data[$i]->comment_count = count($comments_data);
+        
+                $user_id = $data[$i]->user_id;
+                $user_option = array(
+                    'id' => $user_id
+                );
+                $user_data = $this->Users_model->get_details($user_option)->getRow();
+                $user_images = unserialize($user_data->image);
+                $user_avatar = $user_images['file_name'];
+        
+                if($user_avatar && $user_avatar != '') {
+                    $data[$i]->user_avatar = $user_avatar;
+                }
+                else {
+                    $data[$i]->user_avatar = '';
+                }
+
+                $user_id = $this->login_user->id;
+                
+                $favourte_user = $data[$i]->favourite_user;
+                $position = strpos($favourte_user, $user_id.":", 0);
+                if (is_numeric($position)){
+                    $data[$i]->favourte_user_flag = 1;
+                }
+                else{
+                    $data[$i]->favourte_user_flag = 0;
+                }
+
+                $reposted_user = $data[$i]->reposted_user;
+                $position = strpos($reposted_user, $user_id.":", 0);
+                if (is_numeric($position)){
+                    $data[$i]->reposted_user_flag = 1;
+                }
+                else{
+                    $data[$i]->reposted_user_flag = 0;
+                }
+        
+                $data[$i]->user_name = $user_data->first_name . ' ' . $user_data->last_name;
+            }
+            
+            $view_data = array(
+                'department_id' => $department_id,
+                'workfeed_data' => $data
+            );
+            
             return $this->template->view('department/tabs/workfeed_tab', $view_data);    
         }
     }
